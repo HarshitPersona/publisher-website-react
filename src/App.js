@@ -1,57 +1,58 @@
 import { useEffect } from "react";
 import "./App.css";
 
-import axios from "axios";
-import { PersonaSDK } from "ad-sdk-practice";
+import { PersonaAdSDK } from "persona-ad-sdk";
 
 function App() {
   const config = {
     apiKey: "c2f376f0-4077-40e5-ad64-c26d80a879a9",
-    appId: "645ce04c44984e299373da14",
   };
 
-  const generateApiKeyButtonEl = document.getElementById(
-    "generateApiKeyButton"
-  );
-  const createAssetButtonEl = document.getElementById("createAssetButton");
+  // const generateApiKeyButtonEl = document.getElementById(
+  //   "generateApiKeyButton"
+  // );
+  // const createAssetButtonEl = document.getElementById("createAssetButton");
 
   const callTheApi = async () => {
-    const adSdk = new PersonaSDK(config);
-    await adSdk.initialize();
-    adSdk.showAd(
-      "dummyplacementid",
-      "banner",
-      { dimensions: { width: 600, height: 160 } },
-      "banner-1"
-    );
-    adSdk.showAd(
-      "dummyplacementid",
-      "banner",
-      { dimensions: { width: 300, height: 250 } },
-      "banner-2"
-    );
-    adSdk.showAd(
-      "dummyplacementid",
-      "banner",
-      { dimensions: { width: 600, height: 160 } },
-      "banner-3"
-    );
+    const personaAdSdk = new PersonaAdSDK(config);
+    const adSdk = await personaAdSdk.getClient();
+
+    adSdk.showAd({
+      placementId: "645e2e853fd522ba86c915ed",
+      adFormat: "Banner",
+      containerId: "banner-1",
+      adConfig: { dimensions: "600x160" },
+    });
+
+    adSdk.showAd({
+      placementId: "645e2e853fd522ba86c915ed",
+      adFormat: "Banner",
+      containerId: "banner-2",
+      adConfig: { dimensions: "300x250" },
+    });
+
+    adSdk.showAd({
+      placementId: "645e2e853fd522ba86c915ed",
+      adFormat: "Banner",
+      containerId: "banner-3",
+      adConfig: { dimensions: "600x160" },
+    });
   };
 
-  generateApiKeyButtonEl?.addEventListener("click", async () => {
-    const res = await axios.patch(
-      "http://localhost:3000/api/publishers/api-key",
-      { email: "harshit1kumar@gmail.com" }
-    );
-    console.log(res);
-  });
+  // generateApiKeyButtonEl?.addEventListener("click", async () => {
+  //   const res = await axios.patch(
+  //     "http://localhost:3000/api/publishers/api-key",
+  //     { email: "harshit1kumar@gmail.com" }
+  //   );
+  //   console.log(res);
+  // });
 
-  createAssetButtonEl?.addEventListener("click", async () => {
-    const res = await axios.post("http://localhost:3000/api/assets", {
-      email: "harshit1kumar@gmail.com",
-    });
-    console.log(res);
-  });
+  // createAssetButtonEl?.addEventListener("click", async () => {
+  //   const res = await axios.post("http://localhost:3000/api/assets", {
+  //     email: "harshit1kumar@gmail.com",
+  //   });
+  //   console.log(res);
+  // });
 
   useEffect(() => {
     callTheApi();
